@@ -15,9 +15,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -28,6 +31,7 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -45,6 +49,10 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kotlinplayground.ui.theme.KotlinPlaygroundTheme
+import com.example.kotlinplayground.views.ExerciseRow
+import com.example.kotlinplayground.views.FavoriteRow
+import com.example.kotlinplayground.views.ModifiedSearchBar
+import com.example.kotlinplayground.views.Searchbar
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +62,49 @@ class MainActivity : ComponentActivity() {
                 MyApp(
                     modifier = Modifier.fillMaxSize(),
                 )
+            }
+        }
+    }
+}
+
+@Composable
+fun MyApp(modifier: Modifier = Modifier){
+    //Instead of using remember you can use rememberSaveable. This will save each state surviving configuration changes (such as rotations) and process death.
+    var shouldShowOnboarding by rememberSaveable { mutableStateOf(true) }
+
+    Surface(modifier){
+        if(shouldShowOnboarding){
+            Onboarding(onClickContinue = {shouldShowOnboarding = false})
+        }else{
+            Column(
+                modifier
+                    .padding(vertical = 12.dp).verticalScroll(rememberScrollState())) {
+
+                ModifiedSearchBar(modifier = Modifier.padding(bottom = 4.dp))
+
+                Text(
+                    text = "Pick out your next routine",
+                    style = TextStyle(fontFamily = FontFamily.Monospace),
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp, )
+                )
+                ExerciseRow(exercise = mutableListOf("One", "Two", "Three"));
+
+                Text(
+                    "Your Favorites",
+                    style = TextStyle(fontFamily = FontFamily.Monospace),
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                )
+                FavoriteRow(favs = mutableListOf("One", "Two", "Three", "Four"))
+
+                Text(
+                    text = "Activity Tracker",
+                    style = TextStyle(fontFamily = FontFamily.Monospace),
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                )
+                Greetings()
             }
         }
     }
@@ -86,26 +137,11 @@ fun Onboarding(modifier: Modifier = Modifier, onClickContinue: () -> Unit){
 }
 
 @Composable
-fun MyApp(modifier: Modifier = Modifier){
-    //Instead of using remember you can use rememberSaveable. This will save each state surviving configuration changes (such as rotations) and process death.
-    var shouldShowOnboarding by rememberSaveable { mutableStateOf(true) }
-
-    Surface(modifier){
-        if(shouldShowOnboarding){
-            Onboarding(onClickContinue = {shouldShowOnboarding = false})
-        }else{
-            Greetings()
-        }
-    }
-}
-
-@Composable
-fun Greetings(modifier: Modifier = Modifier,names: List<String> = List(100){"$it"}){
-    LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
-        items(items = names){ name ->
-         Greeting(name = name)
-      }
-    }
+fun Greetings(
+    modifier: Modifier = Modifier,
+    names: List<String> = List(5) { "Item $it" }
+) {
+    names.forEach { name -> Greeting(name = name) }
 }
 
 @Composable
