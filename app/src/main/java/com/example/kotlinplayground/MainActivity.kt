@@ -31,6 +31,7 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -52,6 +53,7 @@ import com.example.kotlinplayground.ui.theme.KotlinPlaygroundTheme
 import com.example.kotlinplayground.views.ExerciseRow
 import com.example.kotlinplayground.views.FavoriteRow
 import com.example.kotlinplayground.views.ModifiedSearchBar
+import com.example.kotlinplayground.views.MyBottomNavigation
 import com.example.kotlinplayground.views.Searchbar
 
 class MainActivity : ComponentActivity() {
@@ -76,35 +78,39 @@ fun MyApp(modifier: Modifier = Modifier){
         if(shouldShowOnboarding){
             Onboarding(onClickContinue = {shouldShowOnboarding = false})
         }else{
-            Column(
-                modifier
-                    .padding(vertical = 12.dp).verticalScroll(rememberScrollState())) {
+            Scaffold(bottomBar = { MyBottomNavigation()}) { padding ->
+                Column(
+                    modifier
+                        .padding(padding)
+                        .verticalScroll(rememberScrollState())
+                ) {
 
-                ModifiedSearchBar(modifier = Modifier.padding(bottom = 4.dp))
+                    ModifiedSearchBar(modifier = Modifier.padding(bottom = 4.dp))
 
-                Text(
-                    text = "Pick out your next routine",
-                    style = TextStyle(fontFamily = FontFamily.Monospace),
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp, )
-                )
-                ExerciseRow(exercise = mutableListOf("One", "Two", "Three"));
+                    Text(
+                        text = "Pick out your next routine",
+                        style = TextStyle(fontFamily = FontFamily.Monospace),
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                    )
+                    ExerciseRow(exercise = mutableListOf("One", "Two", "Three"));
 
-                Text(
-                    "Your Favorites",
-                    style = TextStyle(fontFamily = FontFamily.Monospace),
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                )
-                FavoriteRow(favs = mutableListOf("One", "Two", "Three", "Four"))
+                    Text(
+                        "Your Favorites",
+                        style = TextStyle(fontFamily = FontFamily.Monospace),
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                    )
+                    FavoriteRow(favs = mutableListOf("One", "Two", "Three", "Four"))
 
-                Text(
-                    text = "Activity Tracker",
-                    style = TextStyle(fontFamily = FontFamily.Monospace),
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                )
-                Greetings()
+                    Text(
+                        text = "Activity Tracker",
+                        style = TextStyle(fontFamily = FontFamily.Monospace),
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp, vertical = 4.dp)
+                    )
+                    Greetings()
+                }
             }
         }
     }
@@ -137,10 +143,8 @@ fun Onboarding(modifier: Modifier = Modifier, onClickContinue: () -> Unit){
 }
 
 @Composable
-fun Greetings(
-    modifier: Modifier = Modifier,
-    names: List<String> = List(5) { "Item $it" }
-) {
+fun Greetings(modifier: Modifier = Modifier,
+    names: List<String> = List(5) { "Item $it" }) {
     names.forEach { name -> Greeting(name = name) }
 }
 

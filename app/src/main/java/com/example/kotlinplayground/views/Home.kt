@@ -18,11 +18,15 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -38,6 +42,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.kotlinplayground.R
 import com.example.kotlinplayground.ui.theme.KotlinPlaygroundTheme
 
@@ -132,11 +137,60 @@ fun FavoriteRow(modifier: Modifier = Modifier, favs: List<String>){
     }
 }
 
+@Composable
+fun MyBottomNavigation(modifier: Modifier = Modifier){
+    NavigationBar(
+        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+        modifier = modifier) {
+        
+        NavigationBarItem(
+            selected = true,
+            onClick = { /*TODO*/ },
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Home,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            },
+            label = {
+                Text(
+                    text = "Home",
+                    style = TextStyle(fontSize = 12.sp,fontFamily = FontFamily.Monospace)
+                )
+            }
+        )
+
+
+        NavigationBarItem(
+            selected = true,
+            onClick = { /*TODO*/ },
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.AccountCircle,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            },
+            label = {
+                Text(
+                    text = "Profile",
+                    style = TextStyle(fontSize = 12.sp, fontFamily = FontFamily.Monospace)
+                )
+            }
+        )
+
+
+
+
+    }
+}
+
 
 @Preview(showBackground = true,backgroundColor = 0xFFF5F0EE)
 @Composable
 fun Searchbar() {
     KotlinPlaygroundTheme {
-        FavoriteRow(favs = mutableListOf("One", "Two", "Three", "Four"))
+        MyBottomNavigation()
     }
 }
